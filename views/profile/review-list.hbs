@@ -1,0 +1,21 @@
+<div id="my-reviews-container">
+  <h2 class="reviews-title">Mis Reseñas</h2>
+
+  {{#each mappedReviews}}
+    <div class="my-review-card">
+      <!-- Imagen de la película -->
+      <img src="https://image.tmdb.org/t/p/w500{{this.moviePoster}}" alt="{{this.movieTitle}}" class="review-movie-poster">
+
+      <div class="review-info">
+        <h3 class="review-movie-title">{{this.movieTitle}}</h3>
+        <p class="review-rating">⭐ {{this.rating}} / 5</p>
+        <p class="review-comment">{{this.comment}}</p>
+
+        <!-- Partial de edición -->
+        <div class="review-buttons">
+          {{>editpartial this isOwner=true }}
+        </div>
+      </div>
+    </div>
+  {{/each}}
+</div>

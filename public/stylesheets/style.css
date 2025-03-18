@@ -1,12 +1,343 @@
+@import url("https://fonts.googleapis.com/css2?family=Black+And+White+Picture&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Noto+Sans+JP:wght@100..900&family=Roboto:ital,wght@0,100..900;1,100..900&family=Vina+Sans&display=swap");
+
+/* 🎬🎨 Paleta de colores estilo Netflix */
+
+/* 🔴 Rojo Netflix: #e50914 → Color principal para botones y detalles */
+/* ⚫ Negro profundo: #141414 → Fondo principal */
+/* 🌑 Gris oscuro: #181818 → Fondos secundarios y tarjetas */
+/* 🎭 Gris medio: #808080 → Texto secundario y bordes sutiles */
+/* ⚪ Blanco suave: #ffffff → Texto principal */
+/* 🔥 Amarillo dorado: #e6b91e → Para destacar estrellas o puntuaciones */
+/* 🎬 Azul neón (Opcional): #00a8e1 → Para resaltar elementos como hover */
+/* 🛑 Rojo oscuro: #b20710 → Para botones de eliminar o alertas */
+
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  margin: 0;
+  /* padding: 50px; */
+  font: 14px "Montserrat", sans-serif;
+  background-color: #181818;
+  /* color: #ffffff ; */
 }
 
+/* quitar el subrayado de todos los enlaces */
 a {
-  color: #00b7ff;
+  text-decoration: none;
 }
 
-h1 {
-  color: 15px;
+/* NAVBAR */
+
+nav {
+  background-color: #141414;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* position: fixed/sticky;
+  top: 0; */
+  width: 100%;
+}
+
+nav a {
+  color: #ffffff;
+  margin: 0 15px;
+  font-size: 18px;
+}
+
+.nav-logo a {
+  font-size: 24px;
+  font-weight: bold;
+  color: #e50914;
+}
+
+nav a:hover {
+  color: #e50914;
+}
+
+/* INDEX */
+/* 🌑 Fondo oscuro para toda la página */
+.index-container {
+  background-color: #181818;
+  padding: 20px;
+  text-align: center;
+}
+
+/* 🎬 Título del Index */
+.index-title {
+  color: white;
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+/* 📽️ Grid de películas */
+.movies-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* 🎞️ Tarjeta de cada película */
+.movie-card {
+  background-color: #141414;
+  border-radius: 10px;
+  transition: transform 0.3s ease-in-out;
+}
+
+/* 🎥 Imagen de la película */
+.movie-poster {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  transition: opacity 0.3s ease-in-out;
+}
+
+/* 🎬 Título de la película */
+.movie-title {
+  color: white;
+  font-size: 16px;
+  margin-top: 10px;
+  padding: 10px;
+}
+
+/* 🚀 Efecto al pasar el mouse */
+.movie-card:hover {
+  transform: scale(1.05);
+}
+
+.movie-poster:hover {
+  opacity: 0.8;
+}
+
+/* DETAILS */
+/** detalles */
+#details-container {
+  background-color: #181818;
+  padding: 30px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.movie-details {
+  display: flex;
+  /* flex-wrap: wrap; */
+  gap: 80px;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  color: white;
+}
+
+.movie-info h3 {
+  font-size: 24px;
+  margin-bottom: 30px;
+}
+
+.movie-info h4 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #ffcc00;
+}
+
+.movie-info p {
+  font-size: 16px;
+  line-height: 2;
+}
+
+.separator {
+  /* border: none; */
+  height: 4px; /* Grosor de la línea */
+  background-color: #e50914; /* Color gris oscuro */
+  margin: 40px 0; /* Espaciado arriba y abajo */
+  opacity: 0.6; /* Transparencia */
+}
+
+/* *reseñas */
+.reviews {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.review-card {
+  display: flex;
+  /* flex-wrap: wrap; */
+  gap: 20px;
+  align-items: flex-start; /* Asegura que los elementos estén alineados arriba */
+  padding: 15px;
+}
+.review-card img {
+  border-radius: 20px;
+}
+
+.review-details {
+  display: flex;
+  width: 100%;
+  gap: 20px;
+  justify-content: space-between;
+}
+
+.review-details p {
+  font-size: 18px;
+}
+
+.review-details h4 {
+  color: #ffd700; /* Un dorado más vivo */
+  font-weight: bold;
+}
+
+.review-details-info {
+  color: #ffffff;
+}
+
+@media (max-width: 768px) {
+  .movie-details {
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+  }
+  .review-details {
+    flex-wrap: wrap;
+  }
+}
+
+/* AUTH */
+#auth-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+}
+
+.auth-box {
+  background-color: #1f1f1f;
+  padding: 30px;
+  border-radius: 10px;
+  text-align: center;
+  width: 100%;
+  max-width: 400px;
+}
+
+.auth-box h3 {
+  color: #fff;
+  margin-bottom: 30px;
+}
+
+.auth-box form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  color: white;
+}
+
+/* PROFILE */
+
+/* Contenedor principal */
+#profile-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+  gap: 20px;
+}
+
+h3,
+h5 {
+  color: #ffffff;
+}
+
+.profile-box {
+  background-color: #141414;
+  border-radius: 15px;
+  padding: 30px;
+  max-width: 400px;
+  width: 100%;
+}
+
+.profile-box img {
+  width: 100px;
+  height: 100px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+}
+
+.profile-buttons {
+  margin-top: 30px;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* MIS RESEÑAS */
+
+#my-reviews-container {
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+  color: white;
+  text-align: center;
+}
+
+.reviews-title {
+  font-size: 28px;
+  margin-bottom: 20px;
+  color: #ffffff;
+}
+
+.my-review-card {
+  display: flex;
+  align-items: center;
+  background-color: #1f1f1f;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 20px;
+}
+
+.review-movie-poster {
+  width: 100px;
+  border-radius: 5px;
+}
+
+.review-info {
+  margin-left: 15px;
+  text-align: left;
+}
+
+.review-movie-title {
+  font-size: 20px;
+  color: white;
+  margin-bottom: 5px;
+}
+
+.review-rating {
+  color: #e6b91e;
+  font-weight: bold;
+}
+
+.review-comment {
+  font-size: 16px;
+  line-height: 1.5;
+  color: #b3b3b3;
+}
+
+.review-buttons {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+@media (max-width: 768px) {
+  .my-review-card {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .review-movie-poster {
+    width: 80px;
+    margin-bottom: 10px;
+  }
+
+  .review-info {
+    margin-left: 0;
+  }
 }

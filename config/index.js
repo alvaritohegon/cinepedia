@@ -16,6 +16,10 @@ const favicon = require("serve-favicon");
 // ℹ️ global package used to `normalize` paths amongst different operating systems
 // https://www.npmjs.com/package/path
 const path = require("path");
+const hbs = require("hbs");
+
+const session = require("express-session");
+const MongoStore = require("connect-mongo");
 
 // Middleware configuration
 module.exports = (app) => {
@@ -35,5 +39,23 @@ module.exports = (app) => {
   app.use(express.static(path.join(__dirname, "..", "public")));
 
   // Handles access to the favicon
-  app.use(favicon(path.join(__dirname, "..", "public", "images", "favicon.ico")));
+  app.use(
+    favicon(path.join(__dirname, "..", "public", "images", "favicon.ico"))
+  );
+
+  app.use(
+    session({
+      secret: process.env.SESSION_SECRET,
+      saveUninitialized: false,
+      resave: false,
+      cookie: {
+        maxAge: 1000 * 60 * 60 * 24 * 7, // 7 día. El tiempo de vida de la cookie en MILISEGUNDOS
+      },
+      store: MongoStore.create({
+        mongoUrl:
+          process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/cinepedia", // donde está la DB
+        ttl: 60 * 60 * 24 * 7, // 7 DÍAS time to live. EN SEGUNDOS
+      }),
+    })
+  );
 };

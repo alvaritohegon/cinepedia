@@ -7,12 +7,20 @@
     "dev": "nodemon server.js"
   },
   "dependencies": {
+    "@faker-js/faker": "^9.5.1",
+    "bcrypt": "^5.1.1",
+    "cloudinary": "^1.41.3",
+    "connect-mongo": "^5.1.0",
     "cookie-parser": "^1.4.7",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "express-session": "^1.18.1",
     "hbs": "^4.2.0",
     "mongoose": "^8.10.1",
     "morgan": "^1.10.0",
+    "moviedb-promise": "^4.0.7",
+    "multer": "^1.4.5-lts.1",
+    "multer-storage-cloudinary": "^4.0.0",
     "serve-favicon": "^2.5.0"
   },
   "devDependencies": {

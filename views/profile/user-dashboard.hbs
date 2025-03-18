@@ -1,0 +1,78 @@
+<div id="profile-container">
+
+  <h3>MI PERFIL</h3>
+
+  <div class="profile-box">
+    <img src="{{user.perfilImage}}" alt="granpi" width="60px" height="60px" />
+
+    <div class="profile-info">
+      <h5><b>Usuario:</b> {{user.username}}</h5>
+      <h5><b>Email:</b> {{user.email}}</h5>
+      <div class="profile-buttons">
+        <!-- Button trigger modal -->
+        <button
+          type="button"
+          class="btn btn-danger"
+          data-bs-toggle="modal"
+          data-bs-target="#staticBackdrop"
+        >
+          Editar Foto
+        </button>
+
+        <!-- Modal -->
+        <div
+          class="modal fade"
+          id="staticBackdrop"
+          data-bs-backdrop="static"
+          data-bs-keyboard="false"
+          tabindex="-1"
+          aria-labelledby="staticBackdropLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-dark text-white">
+              <div class="modal-header border-secondary">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Editar Foto</h1>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="modal-body">
+                <form
+                  action="/profile/edit"
+                  method="post"
+                  enctype="multipart/form-data"
+                >
+
+                  <input
+                    type="hidden"
+                    name="currentPerfilImage"
+                    value="{{user.perfilImage}}"
+                  />
+
+                  <label for="coverImage" class="form-label">Cambiar Imagen</label>
+                  <input type="file" name="perfilImage" class="form-control" />
+
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-danger"
+                      data-bs-dismiss="modal"
+                    >Cancelar</button>
+                    <button class="btn btn-primary">Editar</button>
+                  </div>
+
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <a class="btn btn-secondary" href="/profile/reviews">Mis reseñas</a>
+      </div>
+    </div>
+  </div>
+
+</div>

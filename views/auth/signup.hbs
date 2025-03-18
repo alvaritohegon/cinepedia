@@ -1,0 +1,26 @@
+<div id="auth-container">
+  <div class="auth-box">
+    <h3>Registrarse</h3>
+    <form action="/auth/signup" method="post">
+
+      <label for="username" class="form-label">Nombre de usuario</label>
+      <input type="text" class="form-control" name="username" />
+
+      <label for="email" class="form-label">Correo Electronico</label>
+      <input type="text" class="form-control" name="email" />
+
+      <label for="password" class="form-label">Contraseña</label>
+      <input type="password" class="form-control" name="password" />
+
+      <button class="btn btn-danger mt-3">Registrarse</button>
+
+      {{#if errorMessage}}
+
+        <p style="color: red"> {{errorMessage}}</p>
+
+      {{/if}}
+
+    </form>
+  </div>
+
+</div>

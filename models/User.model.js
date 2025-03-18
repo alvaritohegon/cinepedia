@@ -6,7 +6,7 @@ const userSchema = new Schema(
     username: {
       type: String,
       trim: true,
-      required: false,
+      required: true,
       unique: true
     },
     email: {
@@ -19,6 +19,15 @@ const userSchema = new Schema(
     password: {
       type: String,
       required: true
+    },
+    perfilImage: {
+      type: String,
+      default: "https://i.imgur.com/6VBx3io.png" // url de imagen por defecto
+    },
+    role: {
+      type: String,
+      enum: ["user", "admin"], // los únicos posibles valores
+      default: "user"
     }
   },
   {

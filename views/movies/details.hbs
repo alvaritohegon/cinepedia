@@ -1,0 +1,127 @@
+<div id="details-container">
+
+  <div class="movie-details">
+      <img
+        src="https://image.tmdb.org/t/p/w500{{details.poster_path}}"
+        alt="granpi"
+        width="300px"
+      />
+    <div class="movie-info">
+      <h3>{{details.title}}</h3>
+      <h4>Sinopsis:</h4>
+      <p>{{#if details.overview}} {{details.overview}} {{else}} No hay descripción disponible. {{/if}}</p>
+    </div>
+  </div>
+
+  <hr class="separator">
+
+  <!-- Button trigger modal -->
+  {{#if isUserActive}}
+    <button
+      type="button"
+      class="btn btn-success mb-5"
+      data-bs-toggle="modal"
+      data-bs-target="#staticBackdrop"
+    >
+      Añadir Reseña
+    </button>
+
+  {{/if}}
+
+  <!-- Modal -->
+  <div
+    class="modal fade"
+    id="staticBackdrop"
+    data-bs-backdrop="static"
+    data-bs-keyboard="false"
+    tabindex="-1"
+    aria-labelledby="staticBackdropLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content bg-dark text-white">
+        <div class="modal-header border-secondary">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Escribe tu
+            reseña</h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <form action="/reviews/{{details.id}}/create" method="POST">
+            <div class="mb-3">
+              <label for="rating" class="col-form-label">Calificación</label>
+              <input
+                type="number"
+                class="form-control"
+                name="rating"
+                min="1"
+                max="5"
+                required
+              />
+            </div>
+
+            <div class="mb-3">
+              <label for="comment" class="col-form-label">Comentario</label>
+              <textarea class="form-control" name="comment"></textarea>
+            </div>
+
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >Cancelar</button>
+              <button class="btn btn-success"> Crear </button>
+            </div>
+
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  {{#if errorMessage}}
+       <p style="color: #b20710">{{errorMessage}}</p>
+  {{/if}}
+
+  <div class="reviews">
+    {{#if mappedArr.length}}
+    {{!-- <h3>Reseñas</h3> --}}
+    {{/if}}
+    {{#each mappedArr}}
+ 
+      <div class="review-card">
+        <img
+        src="{{this.user.perfilImage}}"
+        alt="perfil image"
+        width="100px"
+        height="100px"
+        />
+        <div class="review-details">
+          <div class="review-details-info">
+
+            <h3>{{this.user.username}} </h3>
+            <h4>⭐{{this.rating}}/5</h4>
+        
+            <p>{{this.comment}}</p>
+          </div>
+
+          <!-- PARTIAL -->
+          <div>
+            {{>editpartial this}}
+          </div>
+
+        </div>
+
+      </div>
+
+    {{/each}}
+
+  </div>
+</div>

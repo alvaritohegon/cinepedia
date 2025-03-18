@@ -1,0 +1,24 @@
+<div id="auth-container">
+  <div class="auth-box">
+
+    <h3>Acceso</h3>
+    <form action="/auth/login" method="post">
+
+      <label for="identifier" class="form-label">Correo Electronico o Usuario</label>
+      <input type="text" class="form-control" name="identifier" />
+
+      <label for="password" class="form-label">Contraseña</label>
+      <input type="password" class="form-control" id="password" name="password" />
+      {{!-- <button type="button" id="togglePassword">👁️</button> --}}
+
+
+      <button class="btn btn-danger mt-3">Inicar Sesión</button>
+
+      {{#if errorMessage}}
+
+        <p style="color: red">{{errorMessage}}</p>
+
+      {{/if}}
+    </form>
+  </div>
+</div>
