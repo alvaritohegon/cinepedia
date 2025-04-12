@@ -1,3 +1,5 @@
+const User = require("../models/User.model");
+
 function isLoggedIn(req, res, next) {
   // middlewares para proteger rutas privadas.
   // solo se ejecuta en rutas que queremos que sean privadas.
@@ -17,25 +19,41 @@ function updateLocals(req, res, next) {
 
   if (req.session.activeUser === undefined) {
     res.locals.isUserActive = false;
-    res.locals.activeUser = null
+    res.locals.activeUser = null;
+    res.locals.isAdmin = false;
   } else {
     res.locals.isUserActive = true;
-    res.locals.activeUser = req.session.activeUser
+    res.locals.activeUser = req.session.activeUser;
+    res.locals.isAdmin = req.session.activeUser.role === "admin";
   }
 
   next();
 }
 
-function isAdmin (req,res,next) {
-  if (req.session.ativeUser.role === "admin") {
-    next() // continua con la ruta
+function isAdmin(req, res, next) {
+  if (req.session.activeUser.role === "admin") {
+    next(); // continua con la ruta
   } else {
-    res.redirect("/") // no tienes acceso
+    res.redirect("/"); // no tienes acceso
+  }
+}
+
+async function isBanned(req, res, next) {
+  const user = await User.findById(req.session.activeUser._id);
+
+  if (user.isBanned === false) {
+    next();
+  } else {
+    // esta línea borra la sesión activa del usuario
+    req.session.destroy(() => {
+      res.redirect("/");
+    });
   }
 }
 
 module.exports = {
   isLoggedIn,
   updateLocals,
-  isAdmin
+  isAdmin,
+  isBanned,
 };

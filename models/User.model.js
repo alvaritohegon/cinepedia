@@ -7,32 +7,45 @@ const userSchema = new Schema(
       type: String,
       trim: true,
       required: true,
-      unique: true
+      unique: true,
     },
     email: {
       type: String,
       required: true,
       unique: true,
       lowercase: true,
-      trim: true
+      trim: true,
+    },
+    status: {
+      type: String,
+      enum: ["Pending Confirmation", "Active"], // los únicos posibles valores
+      default: "Pending Confirmation",
+    },
+    confirmationCode: {
+      type: String,
+      unique: true,
     },
     password: {
       type: String,
-      required: true
+      required: true,
     },
     perfilImage: {
       type: String,
-      default: "https://i.imgur.com/6VBx3io.png" // url de imagen por defecto
+      default: "https://i.imgur.com/6VBx3io.png", // url de imagen por defecto
+    },
+    isBanned: {
+      type: Boolean,
+      default: false,
     },
     role: {
       type: String,
       enum: ["user", "admin"], // los únicos posibles valores
-      default: "user"
-    }
+      default: "user",
+    },
   },
   {
-    // this second object adds extra properties: `createdAt` and `updatedAt`    
-    timestamps: true
+    // this second object adds extra properties: `createdAt` and `updatedAt`
+    timestamps: true,
   }
 );
 

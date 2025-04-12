@@ -1,0 +1,25 @@
+<div class="index-container">
+
+  {{#if errorMessage}}
+
+    <p style="color: red;">{{errorMessage}}</p>
+
+  {{else}}
+    <h1 class="index-title">Buscaste: {{filmName}}</h1>
+
+    <div class="movies-grid">
+      {{#each movies}}
+        <div class="movie-card">
+          <a href="/movies/{{this.id}}">
+            <img
+              src="https://image.tmdb.org/t/p/w500{{this.poster_path}}"
+              alt="{{this.title}}"
+              class="movie-poster"
+            />
+          </a>
+          <h3 class="movie-title">{{this.title}}</h3>
+        </div>
+      {{/each}}
+    </div>
+  {{/if}}
+</div>

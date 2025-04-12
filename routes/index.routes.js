@@ -6,15 +6,10 @@ const moviedb = require("../utils/tmdbApi");
 
 /* GET home page */
 router.get("/", (req, res, next) => {
+  console.log(req.session.activeUser);
   moviedb
     .movieNowPlaying({ language: "es-EN" })
     .then((movies) => {
-      // const map = movies.results.map((elem) => {
-      //   return elem.id.toString()
-      // })
-
-      // console.log(map);
-
       res.render("index.hbs", { movies: movies.results });
     })
     .catch((err) => {

@@ -11,9 +11,11 @@
       <h4>Sinopsis:</h4>
       <p>{{#if details.overview}} {{details.overview}} {{else}} No hay descripción disponible. {{/if}}</p>
     </div>
+
   </div>
 
   <hr class="separator">
+
 
   <!-- Button trigger modal -->
   {{#if isUserActive}}
@@ -26,9 +28,13 @@
       Añadir Reseña
     </button>
 
+    <button type="button" class="btn btn-primary mb-5" data-bs-toggle="modal" data-bs-target="#addToListModal">
+      Añadir a una Lista
+    </button>
+
   {{/if}}
 
-  <!-- Modal -->
+  <!-- Modal AÑADIR RESEÑA-->
   <div
     class="modal fade"
     id="staticBackdrop"
@@ -81,6 +87,44 @@
           </form>
         </div>
 
+      </div>
+    </div>
+  </div>
+
+    <!-- Modal AÑADIR A LA LISTA-->
+
+  <div class="modal fade" id="addToListModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content bg-dark text-white">
+        <div class="modal-header border-secondary">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Escoge una lista</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          {{#if lists.length}}
+
+          <form action="/lists/add/{{details.id}}" method="POST">
+
+          <div class="mb-3">
+            <select name="list" class="form-select">
+              {{#each lists}}
+                <option value="{{this._id}}">{{this.name}}</option>
+              {{/each}}
+            </select>
+            
+          </div>
+
+           <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button class="btn btn-primary">Añadir</button>
+          </div>
+
+          </form>
+            {{else}}
+            <p class="text-warning mt-3">🎬 No hay listas disponibles para añadir esta película</p>
+            {{/if}}
+        </div>
+  
       </div>
     </div>
   </div>

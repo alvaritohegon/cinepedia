@@ -16,13 +16,45 @@
 
   <body>
 
-    <nav>
+    <nav class="custom-navbar">
       <div class="nav-logo">
         <a href="/">CINEPEDIA</a>
 
       </div>
-      <div>
+
+      <form class="form-search" action="/movies/search">
+        <input
+          type="text"
+          name="filmName"
+          placeholder="...busca una película"
+          autocomplete="off"
+        />
+        <button>Buscar</button>
+      </form>
+
+      <div class="nav-links">
+        {{#if isAdmin}}
+          <div class="dropdown">
+            <a
+              class="btn btn-warning dropdown-toggle"
+              href="#"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              Admin Panel
+            </a>
+
+            <ul class="dropdown-menu dropdown-menu-dark">
+              <li><a class="dropdown-item" href="/admin/users">Gestionar
+                  Usuarios</a></li>
+              <li><a class="dropdown-item" href="/admin/reviews">Gestionar
+                  Reseñas</a></li>
+            </ul>
+          </div>
+        {{/if}}
         {{#if isUserActive}}
+          <a href="/lists">Mis Listas</a>
           <a href="/profile">Perfil</a>
           <a href="/auth/logout">Cerrar Sesión</a>
         {{else}}

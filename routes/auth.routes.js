@@ -3,8 +3,9 @@ const router = express.Router();
 
 const User = require("../models/User.model");
 const bcrypt = require("bcrypt");
+const transporter = require("../utils/nodemailer");
 
-// aquí nuestras rutas de autenticación
+// Aquí todas las rutas de autenticación
 
 // GET "/auth/signup" => renderizar un formulario de registro
 router.get("/signup", (req, res, next) => {
@@ -23,10 +24,10 @@ router.post("/signup", async (req, res, next) => {
       errorMessage: "Todos los campos son obligatorios",
       previusValues: req.body,
     });
-    return; // cuando esto ocurra deten la ejecución de la ruta para que no siga ejecutando código
+    return; // Cuando esto ocurra deten la ejecución de la ruta para que no siga ejecutando código
   }
 
-  // validacion de contraseñas
+  // Validacion de contraseñas
   const regexPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm;
 
   if (regexPattern.test(password) === false) {
@@ -83,16 +84,53 @@ router.post("/signup", async (req, res, next) => {
 
     console.log(hashPassword);
 
-    await User.create({
+    // crear código de confirmación
+    const characters =
+      "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    let token = "";
+    for (let i = 0; i < 25; i++) {
+      token += characters[Math.floor(Math.random() * characters.length)];
+    }
+
+    const newUser = await User.create({
       username,
       email,
       password: hashPassword,
+      confirmationCode: token,
+    });
+
+    await transporter.sendMail({
+      from: `"Cinepedia 📽️" <${process.env.EMAIL}>`,
+      to: newUser.email,
+      subject: "Confirma tu cuenta de Cinepedia",
+      html: `<p>Haz clic en el siguiente enlace para activar tu cuenta:</p>
+             <a href="http://localhost:3000/auth/confirm/${newUser.confirmationCode}">Confirmar cuenta</a>`,
     });
 
     // TEST
     res.redirect("/auth/login");
 
     // vamos a encriptar la contraseña
+  } catch (err) {
+    next(err);
+  }
+});
+
+// GET "/auth/confirm/:confirmCode" => ruta para confirmar el correo
+router.get("/confirm/:confirmCode", async (req, res, next) => {
+  try {
+    const user = await User.findOneAndUpdate(
+      { confirmationCode: req.params.confirmCode },
+      {
+        status: "Active",
+      }
+    );
+
+    if (!user) {
+      return res.render("auth/confirmation.hbs", { error: true });
+    }
+
+    res.render("auth/confirmation.hbs", { user });
   } catch (err) {
     next(err);
   }
@@ -123,6 +161,14 @@ router.post("/login", async (req, res, next) => {
     });
     console.log(foundUser);
 
+    // comprobar si el usuario está baneado o no
+    if (foundUser.isBanned) {
+      res.render("auth/login.hbs", {
+        errorMessage: "Usuario BANEADO",
+      });
+      return;
+    }
+
     if (foundUser === null) {
       res.render("auth/login.hbs", {
         errorMessage: "Usuario o correo no registrado",
@@ -136,6 +182,15 @@ router.post("/login", async (req, res, next) => {
     if (response === false) {
       res.render("auth/login.hbs", {
         errorMessage: "La contraseña no coincide",
+      });
+      return;
+    }
+
+    if (foundUser.status !== "Active") {
+      // console.log("el usuario está sin confirmar");
+      res.render("auth/login.hbs", {
+        errorMessage:
+          "El usuario no ha verificado su correo todavía para Iniciar Sesión",
       });
       return;
     }

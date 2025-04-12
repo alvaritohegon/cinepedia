@@ -4,14 +4,14 @@ const router = express.Router();
 const User = require("../models/User.model");
 const Review = require("../models/Review.model");
 const uploader = require("../middlewares/uploader");
-const moviedb = require("../utils/tmdbApi");
+const addMovieDataToReviews = require("../utils/addMovieDataToReviews");
 
-const { isLoggedIn } = require("../middlewares/auth.middlewares");
+const { isLoggedIn, isBanned } = require("../middlewares/auth.middlewares");
 
-// ... aquí van a ir las rutas de usuario, que son privadas (solo accesible a usuarios)
+// Aquí van a ir las rutas de usuario, que son privadas (solo accesible a usuarios)
 
-// get "/profile" => renderiza el PERFIL de usuario
-router.get("/", isLoggedIn, (req, res, next) => {
+// GET "/profile" => renderiza el PERFIL de usuario
+router.get("/", isLoggedIn, isBanned, (req, res, next) => {
   console.log("quien me hace la llamada", req.session.activeUser);
 
   User.findById(req.session.activeUser._id)
@@ -23,10 +23,11 @@ router.get("/", isLoggedIn, (req, res, next) => {
     });
 });
 
-// post "/profile/edit" => actualiza la imagen de perfil
+// POST "/profile/edit" => actualiza la imagen de perfil
 router.post(
   "/edit",
   isLoggedIn,
+  isBanned,
   uploader.single("perfilImage"),
   (req, res, next) => {
     console.log(req.body);
@@ -49,7 +50,6 @@ router.post(
       { new: true }
     )
       .then((user) => {
-        // console.log(user.perfilImage);
         res.redirect("/profile");
       })
       .catch((err) => {
@@ -59,34 +59,15 @@ router.post(
 );
 
 // GET "/profile/reviews" => renderiza una página para listar todas las reseñas del usuario
-router.get("/reviews", isLoggedIn, async (req, res, next) => {
-  
+router.get("/reviews", isLoggedIn, isBanned, async (req, res, next) => {
   const userId = req.session.activeUser._id;
   try {
     const reviews = await Review.find({ user: userId })
       .sort({ createdAt: -1 })
       .populate("user");
 
-    const mappedReviews = await Promise.all(
-      reviews.map(async (review) => {
-        let details = await moviedb.movieInfo({
-          id: review.movieId,
-          language: "es-ES",
-        });
+    const mappedReviews = addMovieDataToReviews(reviews);
 
-        // console.log(details);
-
-        return {
-          ...review.toObject(),
-          movieTitle: details.title,
-          moviePoster: details.poster_path,
-        };
-      })
-    );
-
-    console.log(mappedReviews);
-
-    // console.log(reviews);
     res.render("profile/review-list.hbs", { mappedReviews });
   } catch (err) {
     next(err);

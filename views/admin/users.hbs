@@ -1,0 +1,44 @@
+<div class="users-container">
+  <h3>Lista de Usuarios Registrados</h3>
+
+  <table class="table table-hover table-dark table-bordered table-striped">
+    <thead>
+      <th style="text-align:center">👤 Usuario</th>
+      <th style="text-align:center">📧 Email</th>
+      <th style="text-align:center">🟢 Estado</th>
+      <th style="text-align:center">🔁 Banear</th>
+      <th style="text-align:center">🔁 Eliminar</th>
+      <th style="text-align:center">📄 Reseñas</th>
+    </thead>
+    <tbody>
+      {{#each users}}
+        <tr>
+          <td style="text-align:center">{{this.username}}</td>
+          <td style="text-align:center">{{this.email}}</td>
+          <td style="text-align:center">{{this.status}}</td>
+          <td style="text-align:center">
+            <form action="/admin/users/{{this._id}}/ban" method="POST">
+              <button class="btn btn-sm btn-warning">{{#if
+                  this.isBanned
+                }}Desbanear{{else}}Banear{{/if}}</button>
+            </form>
+          </td>
+          <td style="text-align:center">
+            <form action="/admin/users/{{this._id}}/delete" method="POST">
+              <button class="btn btn-sm btn-danger">Eliminar</button>
+            </form>
+          </td>
+          <td style="text-align:center">
+            <a
+              href="/admin/users/{{this._id}}/reviews"
+              class="btn btn-outline-info btn-sm"
+            >
+              Ver reseñas
+            </a>
+          </td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+
+</div>

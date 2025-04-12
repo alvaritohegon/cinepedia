@@ -2,8 +2,12 @@ const express = require("express");
 const router = express.Router();
 
 const Review = require("../models/Review.model");
+const capitalize = require("../utils/capitalize");
+const { isLoggedIn, isBanned } = require("../middlewares/auth.middlewares");
 
-// aquí todas las rutas de reviews
+router.use(isLoggedIn, isBanned);
+
+// Aquí todas las rutas de reviews
 
 // POST "/reviews/:movieId/create" => recibir la info de una review y crearla en la base de datos
 router.post("/:movieId/create", (req, res, next) => {
@@ -13,7 +17,7 @@ router.post("/:movieId/create", (req, res, next) => {
 
   // validaciones de servidor(backend)
 
-  //* que todos los campos tengan información(comentario y rating)
+  // Que todos los campos tengan información(comentario y rating)
 
   if (comment === "" || rating === undefined) {
     req.session.errorMessage =
@@ -22,7 +26,7 @@ router.post("/:movieId/create", (req, res, next) => {
     return;
   }
 
-  //* validacion de comentario
+  // Validacion de comentario
   const commentRegex = /^[a-zA-Z0-9À-ÿ.,!?'"()\-_\s]{5,500}$/;
   if (commentRegex.test(comment) === false) {
     req.session.errorMessage =
@@ -33,7 +37,7 @@ router.post("/:movieId/create", (req, res, next) => {
 
   Review.create({
     rating,
-    comment: comment.trim(),
+    comment: capitalize(comment.trim()),
     user: req.session.activeUser._id,
     movieId,
   })
@@ -54,7 +58,7 @@ router.post("/:reviewId/edit", async (req, res, next) => {
 
   try {
     const searchReview = await Review.findById(reviewId);
-    const movieId = searchReview.movieId
+    const movieId = searchReview.movieId;
 
     // validaciones  servidor (backend)
     if (comment === "" || rating === undefined) {
@@ -64,7 +68,7 @@ router.post("/:reviewId/edit", async (req, res, next) => {
       return;
     }
 
-    //* validacion de comentario
+    // validacion de comentario
     const commentRegex = /^[a-zA-Z0-9À-ÿ.,!?'"()\-_\s]{5,500}$/;
     if (commentRegex.test(comment) === false) {
       req.session.errorMessage =
@@ -82,10 +86,6 @@ router.post("/:reviewId/edit", async (req, res, next) => {
       { new: true }
     );
 
-    // console.log(req.session.activeUser);
-    // console.log(review);
-
-    // console.log(review);
     res.redirect(`/movies/${review.movieId}`);
   } catch (err) {
     next(err);
@@ -95,7 +95,6 @@ router.post("/:reviewId/edit", async (req, res, next) => {
 // POST "/reviews/:reviewId/delete"
 router.post("/:reviewId/delete", async (req, res, next) => {
   const reviewId = req.params.reviewId;
-
   try {
     const review = await Review.findByIdAndDelete(reviewId);
     console.log(review);

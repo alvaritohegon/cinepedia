@@ -1,0 +1,96 @@
+<div class="list-container">
+
+  <h2>Mis listas</h2>
+
+  <form class="create-form" action="/lists/create" method="post">
+
+    <label for="name" class="form-label">Nombre de la Lista</label>
+    <input type="text" name="name" class="form-control" />
+
+    <button class="btn btn-success">Crear Lista</button>
+
+    {{#if errorMessage}}
+      <p style="color: #b20710">{{errorMessage}}</p>
+    {{/if}}
+
+  </form>
+
+  <div class="listas">
+
+    {{#each lists}}
+
+      <div class="list-card">
+        <a href="/lists/{{this._id}}"><h4>{{this.name}}</h4></a>
+        <div>
+
+          <button
+            type="button"
+            class="btn btn-primary mb-2"
+            data-bs-toggle="modal"
+            data-bs-target="#editModal-{{this._id}}"
+          >
+            Editar Nombre
+          </button>
+
+          <!-- Modal de EDITAR -->
+          <div
+            class="modal fade"
+            id="editModal-{{this._id}}"
+            data-bs-backdrop="static"
+            data-bs-keyboard="false"
+            tabindex="-1"
+            aria-labelledby="staticBackdropLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content bg-dark text-white">
+                <div class="modal-header border-secondary">
+                  <h1 class="modal-title fs-5" id="staticBackdropLabel">Editar
+                    nombre</h1>
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
+                </div>
+                <div class="modal-body">
+                  <form action="/lists/{{this._id}}/edit" method="POST">
+
+                    <div class="mb-3">
+                      <label for="name" class="col-form-label">Nombre</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        name="name"
+                        value="{{this.name}}"
+                      />
+                    </div>
+
+                    <div class="modal-footer">
+                      <button
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal"
+                      >Cancelar</button>
+                      <button class="btn btn-primary">Aceptar</button>
+                    </div>
+
+                  </form>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <form action="/lists/{{this._id}}/delete" method="POST">
+            <button class="btn btn-danger">Eliminar</button>
+          </form>
+
+        </div>
+
+      </div>
+
+    {{/each}}
+  </div>
+
+</div>

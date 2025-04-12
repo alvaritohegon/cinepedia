@@ -1,6 +1,6 @@
 <div class="index-container">
-  <h1 class="index-title">Películas en Cartelera</h1>
-
+  <h3 class="mb-3">Lista: {{moviesIDs.name}}</h3>
+  {{#if movies}}
   <div class="movies-grid">
     {{#each movies}}
       <div class="movie-card">
@@ -12,7 +12,13 @@
           />
         </a>
         <h3 class="movie-title">{{this.title}}</h3>
+        <form action="/lists/{{../moviesIDs._id}}/remove/{{this.id}}" method="POST">
+          <button class="btn btn-danger">Eliminar</button>
+        </form>
       </div>
     {{/each}}
   </div>
+  {{else}}
+  <p style="color: #e50914">No hay ninguna película añadida todavía</p>
+  {{/if}}
 </div>

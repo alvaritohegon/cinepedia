@@ -1,0 +1,38 @@
+<div id="my-reviews-container" class="mt-4">
+
+  <form action="/admin/reviews" class="search-form mb-4">
+    <input
+      type="text"
+      name="search"
+      class="form-control"
+      placeholder="Busca una reseña"
+    />
+    <button class="btn btn-success">Buscar</button>
+  </form>
+  {{! aqui mostrar las 10 últimas reseñas publicadas }}
+  {{#each reviews}}
+
+    <div class="my-review-card">
+      <!-- Imagen de la película -->
+      <img
+        src="https://image.tmdb.org/t/p/w500{{this.moviePoster}}"
+        alt="{{this.movieTitle}}"
+        class="review-movie-poster"
+      />
+
+      <div class="review-info">
+        <h2 class="review-movie-title">{{this.movieTitle}}</h2>
+        <h5 style="color:red">{{this.user.username}}</h5>
+        <p class="review-rating">⭐ {{this.rating}} / 5</p>
+        <p class="review-comment">{{this.comment}}</p>
+
+        <div class="review-buttons">
+          <form action="/reviews/{{this._id}}/delete" method="post">
+            <button class="btn btn-danger">Borrar</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+  {{/each}}
+</div>

@@ -1,0 +1,10 @@
+<div class="confirmation-container">
+  {{#if error}}
+    <h3>El enlace de confirmación no es válido</h3>
+    <p>Revisa tu bandeja de entrada</p>
+  {{else}}
+    <h2>Hola {{user.usarname}}!</h2>
+    <p>Tu cuenta ha sido activada correctamente. Ya puedes iniciar sesión</p>
+    <a href="/auth/login" class="btn btn-success">Ir al Login</a>
+  {{/if}}
+</div>

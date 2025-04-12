@@ -24,7 +24,7 @@ require("./config")(app);
 const capitalize = require("./utils/capitalize");
 const projectName = "cinepedia";
 
-app.locals.appTitle = `${capitalize(projectName)} created with IronLauncher`;
+app.locals.appTitle = `Cinepedia`;
 
 // quiero que en todas las rutas se actualice la variable local isUserActive
 const { updateLocals } = require("./middlewares/auth.middlewares");
@@ -37,11 +37,16 @@ const authRoutes = require("./routes/auth.routes");
 const profileRoutes = require("./routes/profile.routes");
 const moviesRoutes = require("./routes/movies.routes");
 const reviewsRoutes = require("./routes/reviews.routes");
+const listsRoutes = require("./routes/lists.routes");
+const adminRoutes = require("./routes/admin.routes");
+
 app.use("/", indexRoutes);
 app.use("/auth", authRoutes);
 app.use("/profile", profileRoutes);
 app.use("/movies", moviesRoutes);
 app.use("/reviews", reviewsRoutes);
+app.use("/lists", listsRoutes);
+app.use("/admin", adminRoutes);
 
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require("./error-handling")(app);
