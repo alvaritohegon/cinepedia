@@ -66,7 +66,7 @@ router.get("/reviews", isLoggedIn, isBanned, async (req, res, next) => {
       .sort({ createdAt: -1 })
       .populate("user");
 
-    const mappedReviews = addMovieDataToReviews(reviews);
+    const mappedReviews = await addMovieDataToReviews(reviews);
 
     res.render("profile/review-list.hbs", { mappedReviews });
   } catch (err) {
