@@ -104,7 +104,7 @@ router.post("/signup", async (req, res, next) => {
       to: newUser.email,
       subject: "Confirma tu cuenta de Cinepedia",
       html: `<p>Haz clic en el siguiente enlace para activar tu cuenta:</p>
-             <a href="${process.env.BASE_URL}/confirm/${newUser.confirmationCode}">Confirmar cuenta</a>`,
+             <a href="${process.env.BASE_URL}/auth/confirm/${newUser.confirmationCode}">Confirmar cuenta</a>`,
     });
 
     // TEST
