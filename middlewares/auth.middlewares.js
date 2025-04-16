@@ -39,7 +39,19 @@ function isAdmin(req, res, next) {
 }
 
 async function isBanned(req, res, next) {
-  const user = await User.findById(req.session.activeUser._id);
+  const sessionUser = req.session.activeUser;
+
+  if (!sessionUser) {
+    res.redirect("/");
+    return;
+  }
+
+  const user = await User.findById(sessionUser._id);
+
+  if (!user) {
+    // Por si el usuario fue borrado o no se encuentra en la base de datos
+    return res.redirect("/");
+  }
 
   if (user.isBanned === false) {
     next();
